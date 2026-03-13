@@ -1,0 +1,20 @@
+{
+  "name": "alisnap",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace @alisnap/web",
+    "dev:api": "npm run dev --workspace @alisnap/api",
+    "build:web": "npm run build --workspace @alisnap/web",
+    "build:api": "npm run build --workspace @alisnap/api",
+    "db:generate": "npm run generate --workspace @alisnap/database",
+    "db:check": "npm run db:check --workspace @alisnap/database"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2"
+  }
+}
