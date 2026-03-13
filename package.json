@@ -12,7 +12,13 @@
     "build:web": "npm run build --workspace @alisnap/web",
     "build:api": "npm run build --workspace @alisnap/api",
     "db:generate": "npm run generate --workspace @alisnap/database",
-    "db:check": "npm run db:check --workspace @alisnap/database"
+    "db:check": "npm run db:check --workspace @alisnap/database",
+    "format:check": "node scripts/check-formatting.mjs",
+    "check:docs": "node scripts/check-markdown-structure.mjs",
+    "lint": "npm run lint --workspace @alisnap/web && npm run lint --workspace @alisnap/api && npm run lint --workspace @alisnap/database",
+    "typecheck": "npm run typecheck --workspace @alisnap/web && npm run typecheck --workspace @alisnap/api && npm run typecheck --workspace @alisnap/database",
+    "test": "node scripts/repo-smoke.mjs && npm run test --workspace @alisnap/api",
+    "verify": "npm run format:check && npm run check:docs && npm run lint && npm run typecheck && npm run test"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2"

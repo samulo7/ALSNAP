@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "generate": "prisma generate",
-    "db:check": "tsx src/check-connectivity.ts"
+    "db:check": "tsx src/check-connectivity.ts",
+    "lint": "tsc --project tsconfig.json --pretty false --noEmit",
+    "typecheck": "npm run lint"
   },
   "dependencies": {
     "@prisma/client": "^6.6.0"
@@ -16,4 +18,3 @@
     "typescript": "^5.8.0"
   }
 }
-

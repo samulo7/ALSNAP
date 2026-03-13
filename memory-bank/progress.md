@@ -1,33 +1,50 @@
-﻿# 云知通开发进度记录
+# 云知通开发进度记录
 
 ## 1. 当前状态
 
-- 当前已完成并经测试验证的步骤：`A-01 补齐强制上下文文档`、`A-02 建立实施基线文档`、`A-03 初始化前后端工程骨架`
-- 当前未开始步骤：`A-04 建立统一编码与提交规范`
-- 验证状态：`A-01`、`A-02` 已确认通过；`A-03` 已完成前端启动、后端健康检查、数据库连通性检查与目录结构复核
+- 当前已完成并经测试验证的步骤：`A-01 补齐强制上下文文档`、`A-02 建立实施基线文档`、`A-03 初始化前后端工程骨架`、`A-04 建立统一编码与提交规范`
+- 当前未开始步骤：`A-05 设计基础数据模型`
+- 验证状态：`A-01`、`A-02`、`A-03` 已确认通过；`A-04` 已完成统一启动说明、根级校验脚本、前后端静态检查入口、基础 smoke test 和后端统一错误/日志约定验证
 
 ## 2. 本轮完成内容
 
-- 完整复核 `memory-bank/` 下全部上下文文件，并以 `progress.md`、`implementation-plan.md` 为基线确认当前应执行 `A-02`
-- 新建根目录 `system-architecture.md`，明确阶段 A 的系统边界、模块拆分、页面范围、接口域和核心实体命名
-- 新建根目录 `database-design.md`，明确阶段 A 的最小数据实体、关键字段和实体关系
-- 新建根目录 `module-list.md`，将 MVP 范围映射到模块、页面、接口和数据实体，并单独列出后续阶段能力
-- 更新 `memory-bank/architecture.md`，补充上述三份新文档在仓库中的作用说明
-- 初始化 `apps/web`、`apps/api` 和 `packages/database` 工程骨架，形成前端、后端与数据库访问层的基本目录结构
-- 补充前后端环境变量模板，明确开发、测试、生产占位配置
-- 完成 `A-03` 验证：前端首页构建并启动成功，后端健康检查接口返回 `200`，数据库通过临时本地 PostgreSQL 实例完成一次 `SELECT 1` 连通性检查
-- 识别并记录 Windows 沙箱下的限制：`Next.js build` 和 `tsx` 会因子进程 `spawn EPERM` 失败，需在非沙箱环境执行对应验证命令
+- 完整复核 `memory-bank/` 下全部上下文文件，并以 `progress.md`、`implementation-plan.md` 为基线确认本轮应执行 `A-04`
+- 新建根目录 `README.md`，明确项目目录结构、环境准备、启动方式、本地校验命令和当前阶段边界
+- 新建 `docs/engineering-standards.md`，统一命名规范、HTTP 返回结构、日志字段和提交前最少检查要求
+- 新增 `scripts/check-formatting.mjs`、`scripts/check-markdown-structure.mjs`、`scripts/repo-smoke.mjs`，形成根目录 `format:check`、`check:docs`、`test`、`verify` 等统一入口
+- 为 `apps/web`、`apps/api`、`packages/database` 补齐 `lint` / `typecheck` 脚本入口，保证前后端和数据库访问层都能从根目录统一触发静态检查
+- 在 `apps/api` 落地统一响应和日志规范：新增成功/错误返回工具、请求 `traceId` 中间件、全局异常过滤器、结构化日志工具，并让健康检查接口遵循统一返回结构
+- 新增 `apps/api/test/smoke.ts`，以零子进程依赖的方式验证统一响应结构和健康检查返回，规避 Windows 沙箱下 `node --test` / `tsx` 的 `spawn EPERM` 限制
+- 更新 `packages/database/src/check-connectivity.ts` 的日志输出结构，使其与后端日志字段约定保持一致
+- 更新 `memory-bank/architecture.md`，同步记录 `README`、`docs/engineering-standards.md`、`scripts/` 和 API 规范化骨架的作用
 
-## 3. 对后续开发者的提示
+## 3. 本轮验证结果
 
-- `A-03` 已闭合，后续进入 `A-04` 时必须复用 `system-architecture.md`、`database-design.md`、`module-list.md` 中已统一的模块名、接口域和实体名，不要在代码中重新发明命名
-- 继续以 `product-design.md` 第 12 节中锁定的流程与角色规则作为行为约束来源，不要重新解释学习闭环或测验闭环
-- “闯关”在 MVP 中只是完成状态，不是积分激励系统；后续实现不要提前引入积分、排行榜或等级体系
-- 访客/演示账号默认只读，这一边界后续在鉴权和后台设计里要继续保持
-- 如需在 Windows 受限环境复核 `A-03`，应优先使用非沙箱执行前端构建、后端启动和 `db:check`，不要把 `spawn EPERM` 误判为应用代码错误
+已执行并通过以下命令：
 
-## 4. 下一步
+- `npm run format:check`
+- `npm run check:docs`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
+- `npm run verify`
 
-- 下一步应执行 `A-04 建立统一编码与提交规范`
-- 开始 `A-04` 前，继续以当前 `product-design.md` 的学习流程、测验流程和角色路径作为约束来源
-- 后续补充 `README`、静态检查和测试入口时，不得跳过当前三份基线文档定义的命名和范围边界
+验证结论：
+
+- 测试 1：仓库根目录已能找到统一启动说明 `README.md`
+- 测试 2：前后端与数据库访问层都能通过根目录静态检查入口，输出结果清晰
+- 测试 3：后端返回结构、日志字段和数据库脚本命名已按当前规范统一到同一套术语体系
+
+## 4. 对后续开发者的提示
+
+- `A-04` 已闭合，后续进入 `A-05` 时必须继续复用 `system-architecture.md`、`database-design.md`、`module-list.md` 与 `docs/engineering-standards.md` 中已经固定的命名和返回约定
+- `apps/api` 当前已经固定 `traceId + success/error envelope + structured log` 的基础模式，后续新增控制器不要再返回裸对象或临时错误结构
+- 根目录 `npm run verify` 已经是当前阶段的最小本地校验入口；后续新增脚本或测试时，优先挂到这个统一入口下
+- Windows 受限沙箱下，`node --test`、`tsx` 和 `Next.js build` 仍可能触发 `spawn EPERM`；当前测试入口已绕开该限制，但涉及子进程的命令仍应优先在非沙箱环境复核
+- 用户尚未对 `A-04` 结果做人工验证，在收到明确确认前不要开始 `A-05`
+
+## 5. 下一步
+
+- 下一步应为 `A-05 设计基础数据模型`
+- 只有在用户确认当前 `A-04` 验证结果通过后，才允许开始 `A-05`
+- 进入 `A-05` 前，继续以 `product-design.md` 第 12 节中的学习流程、测验流程和角色路径作为行为边界

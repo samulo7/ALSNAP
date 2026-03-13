@@ -1,4 +1,4 @@
-﻿# 云知通仓库文档索引
+# 云知通仓库文档索引
 
 ## 1. 文档目的
 
@@ -8,7 +8,7 @@
 
 ### 仓库根目录
 
-当前仓库已经进入 `A-03` 工程骨架阶段。根目录当前最关键的文件包括 `AGENTS.md`、`system-architecture.md`、`database-design.md`、`module-list.md`、`package.json`、`tsconfig.base.json`、`apps/`、`packages/`、`docs/` 和 `memory-bank/`。
+当前仓库已经进入 `A-04` 工程规范阶段。根目录当前最关键的文件包括 `AGENTS.md`、`README.md`、`system-architecture.md`、`database-design.md`、`module-list.md`、`package.json`、`tsconfig.base.json`、`.gitignore`、`apps/`、`packages/`、`docs/`、`scripts/` 和 `memory-bank/`。
 
 ### `apps/`
 
@@ -20,7 +20,11 @@
 
 ### `docs/`
 
-用于存放工程化过程文档、验收记录和后续部署/接口说明。当前已开始承接阶段 `A-03` 的验证记录。
+用于存放工程化过程文档、验收记录和后续部署/接口说明。当前已包含阶段 `A-03` 验收记录和阶段 `A-04` 工程规范文档。
+
+### `scripts/`
+
+用于存放仓库级本地校验脚本。当前包含格式检查、Markdown 结构检查和仓库 smoke check，是根目录 `verify` 入口的落点目录。
 
 ### `memory-bank/`
 
@@ -31,6 +35,10 @@
 ### `AGENTS.md`
 
 仓库级执行规范，定义文档组织方式、默认技术选型、AI 代理工作顺序与约束。后续任何编码任务都需要先遵守这里的 `Always` 规则，再进入实现。
+
+### `README.md`
+
+仓库统一启动说明，记录当前目录结构、环境准备、前后端启动方式、数据库检查方式、本地校验命令和当前阶段边界，是阶段 `A-04` 新增的工程入口文档。
 
 ### `system-architecture.md`
 
@@ -71,39 +79,58 @@
 
 仓库文档索引，用于记录当前文件和目录的作用；当后续新增代码目录或设计文档时，需要持续更新。
 
-### `apps/web`
+### `docs/engineering-standards.md`
 
-前端应用骨架，采用 `Next.js App Router + TypeScript`。当前包含默认首页、全局样式、应用布局和环境变量模板，用于承接后续角色化首页、内容中心和学习流程页面。
-
-### `apps/api`
-
-后端应用骨架，采用 `NestJS + TypeScript`。当前包含应用入口、健康检查控制器和环境变量模板，用于承接后续鉴权、内容、测验和日志模块。
-
-### `packages/database`
-
-数据库访问层骨架，采用 `Prisma`。当前包含阶段 A 的初始 `schema.prisma`、客户端封装和数据库连通性检查脚本，是后续 `A-05`、`A-06` 的落点目录。
+阶段 `A-04` 新增的工程规范文档，用于统一命名规则、HTTP 返回结构、日志字段和本地检查要求，是当前前后端骨架的实现约束来源之一。
 
 ### `docs/a03-validation.md`
 
 阶段 `A-03` 的测试与验收记录，记录前端首页启动、后端健康检查、数据库连通性检查和沙箱限制下的验证方式，供后续开发者复核。
 
+### `scripts/check-formatting.mjs`
+
+仓库级格式检查脚本，用于校验关键文本文件的 UTF-8 可读性和结尾换行，并避免把现有 Markdown 软换行误判为错误。
+
+### `scripts/check-markdown-structure.mjs`
+
+仓库级 Markdown 结构检查脚本，用于校验文档存在标题且标题层级没有跳跃，是当前文档类变更的基础静态检查入口。
+
+### `scripts/repo-smoke.mjs`
+
+仓库级 smoke check 脚本，用于校验统一脚本入口、关键文档和环境模板是否齐备，是根目录 `npm run test` 的一部分。
+
+### `apps/web`
+
+前端应用骨架，采用 `Next.js App Router + TypeScript`。当前包含默认首页、全局样式、应用布局、环境变量模板和根级 `lint/typecheck` 脚本入口，用于承接后续角色化首页、内容中心和学习流程页面。
+
+### `apps/api`
+
+后端应用骨架，采用 `NestJS + TypeScript`。当前包含应用入口、健康检查控制器、全局异常过滤器、请求 `traceId` 中间件、结构化日志工具、环境变量模板和 smoke test 入口，用于承接后续鉴权、内容、测验和日志模块。
+
+### `packages/database`
+
+数据库访问层骨架，采用 `Prisma`。当前包含阶段 A 的初始 `schema.prisma`、客户端封装、结构化日志风格的数据库连通性检查脚本，以及根级 `lint/typecheck` 脚本入口，是后续 `A-05`、`A-06` 的落点目录。
+
 ## 4. 后续需补充的文档
 
-阶段 `A-02` 所需的三份实施基线文档已经补齐：
+阶段 `A-02` 所需的三份实施基线文档和阶段 `A-04` 所需的工程规范文档已经补齐：
 
 - `system-architecture.md`
 - `database-design.md`
 - `module-list.md`
+- `README.md`
+- `docs/engineering-standards.md`
 
-阶段 `A-03` 的工程骨架已经建立，后续应在不突破 MVP 边界的前提下继续补齐工程说明文档，例如根目录 `README`、统一本地检查入口和阶段验收说明。
+后续应在不突破 MVP 边界的前提下继续补齐与当前步骤匹配的文档，例如数据模型说明、迁移说明、接口契约和阶段验收记录。
 
 在这些文档被后续实现变更前，应保持文档与代码同步；如果这些文档与实际实现发生偏离，先更新文档口径再继续开发。
 
 ## 5. 当前架构洞察
 
-- 当前仓库已经从纯文档阶段进入“文档约束 + 工程骨架”阶段；实现顺序仍然必须先遵守文档边界，再往应用代码中扩展
+- 当前仓库已经从“文档约束 + 工程骨架”推进到“文档约束 + 工程骨架 + 统一工程规范”阶段；后续实现仍然必须先遵守文档边界，再往应用代码中扩展
 - `product-design.md` 已经不仅是愿景文档，也是阶段 A 的行为边界文档；后续页面、权限、测验和学习进度设计都应直接受其第 12 节约束
 - `system-architecture.md`、`database-design.md` 和 `module-list.md` 已经把阶段 A 的模块、页面、接口和实体命名统一下来；后续工程实现不应随意再造第二套命名
+- `README.md` 与 `docs/engineering-standards.md` 已经把当前阶段的启动入口、检查入口、返回结构和日志字段固定下来；后续新增接口和脚本应优先复用，而不是临时拼装
 - MVP 的学习系统是轻量闭环，不是积分运营平台；后续实现时要避免把积分、排行或复杂激励提前混入阶段 A
 - 访客/演示账号是独立角色边界，不是管理员降权版；后续在鉴权、导航和后台权限设计中应单独考虑
 - 内容平台与测验平台从一开始就需要共享角色与进度语义，后续在 `module-list.md` 和 `database-design.md` 中应保持同一套命名

@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "lint": "tsc --project tsconfig.json --pretty false --noEmit",
+    "typecheck": "npm run lint",
+    "test": "tsc -p tsconfig.test.json && node dist-test/test/smoke.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
@@ -20,4 +23,3 @@
     "typescript": "^5.8.0"
   }
 }
-

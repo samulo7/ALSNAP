@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3000",
     "build": "next build",
-    "start": "next start --hostname 127.0.0.1 --port 3000"
+    "start": "next start --hostname 127.0.0.1 --port 3000",
+    "lint": "tsc --project tsconfig.json --pretty false --noEmit",
+    "typecheck": "npm run lint"
   },
   "dependencies": {
     "next": "^15.2.0",
@@ -19,4 +21,3 @@
     "typescript": "^5.8.0"
   }
 }
-
